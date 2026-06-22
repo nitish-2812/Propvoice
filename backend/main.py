@@ -61,12 +61,7 @@ app = FastAPI(
 # FastAPI backend (localhost:8000) because they're on different ports.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        settings.FRONTEND_URL,
-        "http://localhost:5173",     # Vite dev server
-        "http://localhost:3000",     # Alternative dev server
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],          # Allow all HTTP methods
     allow_headers=["*"],          # Allow all headers
