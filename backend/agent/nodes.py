@@ -19,7 +19,7 @@ from bson import ObjectId
 from datetime import datetime, timezone
 from database import get_db
 from services.vapi_service import trigger_call
-from services.groq_service import classify_transcript
+from services.openai_service import classify_transcript
 from agent.state import VoiceAgentState
 
 
@@ -96,7 +96,7 @@ async def evaluation_node(state: VoiceAgentState) -> dict:
     """
     NODE 2 — Evaluation (Transcript Classification)
 
-    Job: Take the call transcript and ask Groq LLaMA to classify it.
+    Job: Take the call transcript and ask OpenAI to classify it.
 
     This is called after Vapi sends us the webhook with the transcript.
     The Groq LLM reads the conversation and decides:
@@ -108,7 +108,7 @@ async def evaluation_node(state: VoiceAgentState) -> dict:
 
     print(f"\n🧠 EVALUATION NODE — Classifying transcript ({len(transcript)} chars)")
 
-    # Send transcript to Groq for classification
+    # Send transcript to OpenAI for classification
     outcome = await classify_transcript(transcript)
 
     print(f"   Result: {outcome}")

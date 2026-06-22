@@ -13,9 +13,8 @@ pydantic-settings==2.7.1
 langgraph==0.2.60
 langchain-core==0.3.28
 
-# Groq - free LLM API for transcript classification
-groq==0.13.1
-
+# OpenAI - API for transcript classification
+openai
 # HTTP client - for calling Vapi API
 httpx==0.28.1
 

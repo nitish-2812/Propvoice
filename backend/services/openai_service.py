@@ -1,14 +1,9 @@
 """
-groq_service.py — Groq LLM Transcript Classification
+openai_service.py — OpenAI LLM Transcript Classification
 
 This is the SECOND LLM in our system.
 - LLM #1 (inside Vapi) handles the real-time conversation.
-- LLM #2 (this one, Groq) analyzes the transcript AFTER the call.
-
-WHY GROQ?
-- It's free (generous free tier)
-- It uses LLaMA 3.3-70B — a powerful open-source model
-- It's fast (Groq's LPU hardware makes inference ~10x faster)
+- LLM #2 (this one, OpenAI) analyzes the transcript AFTER the call.
 
 WHAT IT DOES:
 - Takes the full call transcript as input
@@ -18,7 +13,7 @@ WHAT IT DOES:
   FAILED → call was unclear or disconnected
 """
 
-from groq import AsyncGroq
+from openai import AsyncOpenAI
 from config import settings
 
 
@@ -38,7 +33,7 @@ Respond with ONLY one word: QUALIFIED, NOT_INTERESTED, or FAILED"""
 
 async def classify_transcript(transcript: str) -> str:
     """
-    Send a call transcript to Groq LLaMA and get a classification.
+    Send a call transcript to OpenAI and get a classification.
 
     Args:
         transcript: The full conversation text from the Vapi call
@@ -51,13 +46,13 @@ async def classify_transcript(transcript: str) -> str:
         print("⚠️ Transcript too short or empty — marking as FAILED")
         return "FAILED"
 
-    # Create the Groq client
-    client = AsyncGroq(api_key=settings.GROQ_API_KEY)
+    # Create the OpenAI client
+    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
 
     try:
-        # Send the transcript to Groq's LLaMA model
+        # Send the transcript to OpenAI's model
         response = await client.chat.completions.create(
-            model="llama-3.3-70b-versatile",  # Free tier model
+            model="gpt-4o-mini",  # Extremely fast and cost-effective model
             messages=[
                 {
                     "role": "user",
@@ -74,12 +69,12 @@ async def classify_transcript(transcript: str) -> str:
         # Validate the response is one of our expected values
         valid_outcomes = ["QUALIFIED", "NOT_INTERESTED", "FAILED"]
         if result not in valid_outcomes:
-            print(f"⚠️ Unexpected Groq response: '{result}' — defaulting to FAILED")
+            print(f"⚠️ Unexpected OpenAI response: '{result}' — defaulting to FAILED")
             return "FAILED"
 
-        print(f"🤖 Groq classification: {result}")
+        print(f"🤖 OpenAI classification: {result}")
         return result
 
     except Exception as e:
-        print(f"❌ Groq API error: {e}")
+        print(f"❌ OpenAI API error: {e}")
         return "FAILED"

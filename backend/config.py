@@ -27,8 +27,8 @@ class Settings(BaseSettings):
     VAPI_ASSISTANT_ID: str = ""
     VAPI_PHONE_NUMBER_ID: str = ""
 
-    # Groq API key for LLM transcript classification
-    GROQ_API_KEY: str = ""
+    # OpenAI API key for LLM transcript classification
+    OPENAI_API_KEY: str = ""
 
     # App URLs (used for CORS and webhook configuration)
     BACKEND_URL: str = "http://localhost:8000"
