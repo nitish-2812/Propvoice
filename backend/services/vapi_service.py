@@ -56,6 +56,7 @@ async def trigger_call(customer: dict, company: dict) -> str:
         # This is the "Dynamic Prompting" feature — each company gets
         # a personalized AI caller
         "assistant": {
+            "serverUrl": f"{settings.BACKEND_URL}/api/webhooks/vapi",
             "firstMessage": f"Hi {customer['name']}, I'm calling from {company['name']}. How are you doing today?",
             "voicemailMessage": "Hi, I missed you. Please call us back.",
             "endCallMessage": "Thank you for your time, goodbye.",
